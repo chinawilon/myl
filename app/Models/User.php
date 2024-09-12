@@ -48,6 +48,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return Carbon::now()->gt($this->expired_at);
     }
 
+    public function validToken(): bool
+    {
+        return !$this->isTokenExpired();
+    }
+
     public function isAdmin(): bool
     {
         return $this->roles()->where('roles.id', Role::ADMIN_ID)->exists();
