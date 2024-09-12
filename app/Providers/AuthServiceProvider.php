@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($request->input('api_token')) {
                 /**@var $user User */
                 $user = User::where('api_token', $request->input('api_token'))->first();
-                if (! $user->isTokenExpired() ) {
+                if (! $user?->isTokenExpired() ) {
                     return $user;
                 }
             }
