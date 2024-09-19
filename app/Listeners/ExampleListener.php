@@ -26,6 +26,6 @@ class ExampleListener
      */
     public function handle(LoginFailedEvent $event)
     {
-        var_dump('ex:' . $event->ip);
+//        var_dump('ex:' . $event->ip);
     }
 }
