@@ -17,6 +17,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+
+$router->post('/auth/login', 'AuthController@login');
+
 // 超级管理员的后台管理
 $router->group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () use($router) {
     $router->get('/', 'AdminController@index');
@@ -24,8 +27,10 @@ $router->group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], functio
 
 // 普通用户的后台管理
 $router->group(['prefix' => 'posts', 'middleware' => ['auth']], function () use ($router) {
-    $router->get('/',  'PostController@index');
-    $router->get('/{id}', 'PostController@show');
     $router->get('/latest', 'PostController@latest');
+    $router->get('/',  'PostController@index');
+    $router->post('/', 'PostController@store');
+    $router->put('/{id}', 'PostController@edit');
+    $router->get('/{id}', 'PostController@show');
 });
 

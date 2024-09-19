@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Criteria\RoleCriteria;
+use App\Models\Post;
 use App\Repositories\PostRepository;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Prettus\Repository\Exceptions\RepositoryException;
 
@@ -26,7 +28,51 @@ class PostController extends Controller
             $postRepository
                 ->pushCriteria(new RequestCriteria($request))
                 ->pushCriteria(new RoleCriteria($request->user()))
+                ->with('user:id,name,email')
                 ->get()
+        );
+    }
+
+    /**
+     * 编辑谋篇文章
+     *
+     * @param $id
+     * @param Request $request
+     * @param PostRepository $postRepository
+     * @return JsonResponse
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
+    public function edit($id, Request $request, PostRepository $postRepository): JsonResponse
+    {
+        $payload = $this->validate($request, [
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+        /**@var $post Post */
+        $post = $postRepository->find($id);
+        $this->authorize('edit', $post);
+        $post->update($payload);
+        return response()->json($post);
+    }
+
+
+    /**
+     * 创建谋篇文章
+     *
+     * @param Request $request
+     * @return JsonResponse
+     * @throws AuthorizationException
+     * @throws ValidationException
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $payload = $this->validate($request, [
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
+        return response()->json(
+            $request->user()->posts()->create($payload)
         );
     }
 

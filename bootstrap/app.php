@@ -60,6 +60,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('auth');
+$app->configure('queue');
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -93,7 +94,8 @@ $app->routeMiddleware([
 
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register(VladimirYuldashev\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

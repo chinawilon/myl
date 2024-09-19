@@ -11,11 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Lumen\Auth\Authorizable;
 
 /**
  * @property Carbon $expired_at
  * @property int $id
+ * @property string $password
+ * @property string $api_token
+ * @property string $last_login_ip
  */
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -71,5 +76,18 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function saveLoginSuccess(string $ip): bool
+    {
+        $this->api_token = Str::uuid();
+        $this->expired_at = \Illuminate\Support\Carbon::now()->addDays(10);
+        $this->last_login_ip = $ip;
+        return $this->save();
+    }
+
+    public function checkPassword(string $password): bool
+    {
+        return Hash::check($password, $this->password);
     }
 }

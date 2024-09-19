@@ -15,6 +15,11 @@ class PostPolicy
         return null;
     }
 
+    public function edit(User $user, Post $post): bool
+    {
+        return $user->id == $post->user_id;
+    }
+
     public function view(User $user, Post $post): bool
     {
         return $user->id == $post->user_id;

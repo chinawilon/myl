@@ -6,7 +6,6 @@ use App\Models\Post;
 
 class PostRepository extends Repository
 {
-
     protected $fieldSearchable = [
         'title' => 'like',
         'content' => 'like',

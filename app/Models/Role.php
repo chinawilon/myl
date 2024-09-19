@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Role extends Model
 {
 
-    public const ADMIN_ID = 3; //管理员ID
+    public const ADMIN_ID = 5; //管理员ID
 
     public function users(): BelongsToMany
     {

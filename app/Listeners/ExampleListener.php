@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ExampleEvent;
+use App\Events\LoginFailedEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -21,11 +21,11 @@ class ExampleListener
     /**
      * Handle the event.
      *
-     * @param  \App\Events\ExampleEvent  $event
+     * @param  \App\Events\LoginFailedEvent  $event
      * @return void
      */
-    public function handle(ExampleEvent $event)
+    public function handle(LoginFailedEvent $event)
     {
-        //
+        var_dump('ex:' . $event->ip);
     }
 }
