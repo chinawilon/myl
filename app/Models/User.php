@@ -78,9 +78,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany(Post::class);
     }
 
-    public function saveLoginSuccess(string $ip): bool
+    public function saveLoginSuccess(string $token, string $ip): bool
     {
-        $this->api_token = Str::uuid();
+        $this->api_token = $token;
         $this->expired_at = \Illuminate\Support\Carbon::now()->addDays(10);
         $this->last_login_ip = $ip;
         return $this->save();

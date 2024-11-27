@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -52,6 +53,7 @@ class Handler extends ExceptionHandler
         if ( $exception instanceof  ApiException ) {
             return response()->json(['code' => $exception->getCode(), 'message' => $exception->getMessage()]);
         }
+        Log::error($exception);
         return response()->json(['code' => 9999, 'message' => '未知错误']);
 //        return parent::render($request, $exception);
     }
